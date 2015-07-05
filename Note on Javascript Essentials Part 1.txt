@@ -1,0 +1,139 @@
+Undefined - Not yet declared
+Null	- Declared, but assigned (object type)
+
+-- Type System
+var i = 10;
+console.log(typeof i);
+
+i = 10.00001;
+console.log(typeof i);
+
+var j = false;
+console.log(typeof j);
+
+var m = "Sony India";
+var n = 'Sony India';
+
+console.log(typeof m);
+console.log(typeof n);
+
+console.log(typeof z);
+
+var z = null;
+console.log(typeof z);
+
+// Understanding Type System with conversion
+var a = 10;
+var b = "10";
+
+console.log(a + b);
+console.log(a + parseInt(b));
+
+var c = "100isageofIBM";
+var d = a * parseInt(c);
+
+console.log(typeof d);
+console.log(d);
+
+var z1 = 10 * "ABC";
+console.log(typeof z1);
+
+// Array - Simple
+
+var names = ["Intel", "Microsoft", "Siemens", "Sony"];
+
+console.log(names.length);
+
+for(var index=0;index<names.length;index++)
+	console.log(names[index]);
+
+names[10] = "Google";
+
+console.log(names);
+console.log(names.length);
+
+delete names[0];
+delete names;
+
+
+// Array in the form of stack
+
+var values = [];
+
+for(var index=0;index<=10;index++)
+	values.push(index);
+
+console.log(values.length);
+
+var totalNoOfItems = values.length;
+
+for(var i=0;i<totalNoOfItems;i++)
+	console.log(values.pop());
+
+// Array in for..each
+
+var values = [];
+
+for(var index=0;index<=10;index++)
+	values.push(index);
+
+console.log(values.length);
+
+for each(var item in values)
+	console.log(item);
+
+// Error Handling
+
+try {
+	var i = 10;
+
+	if(i == 10)
+		throw new Error("Value is 10, Unable to process ...");
+} catch(error) {
+	console.log('Error Occurred ... ' + error.message);
+} finally {
+	console.log('Operation Completed ...');
+}
+
+// Error Handling with Custom Objects
+
+try {
+	throw {
+		id: 1001,
+		message: "Invalid Value Specified!"
+	};
+} catch(error) {
+	console.log("Error Id : " + error.id + ", Message : " + 
+		error.Message);
+} finally { 
+	console.log("Operation Completed!");
+}
+
+// Regular Expression Support
+
+var phoneExpression=new RegExp("\\d{3,5}-\\d{5,8}");
+var validStatus =  phoneExpression.test("080-9483984");
+var invalidStatus =  phoneExpression.test("080-108");
+
+console.log("Phone Regular Expression Test : " + validStatus);
+console.log("Phone Regular Expression Test : " + invalidStatus
+
+// Comparison Operators (Special to Javascript)
+var i = 10;
+var j = 10;
+
+console.log(i == j);
+
+k = "10";
+
+console.log(j == k);
+console.log(j === k);
+
+var x = 100;
+var y = "100";
+
+console.log(x != y);
+console.log(x !== y);
+
+console.log(j === j);
+

@@ -1,0 +1,85 @@
+// JSON
+function Skill (domain, technology, level) {
+    this.domain = domain;
+    this.technology = technology;
+    this.level = level;
+};
+
+function Customer(id, name, address, creditLimit, status) {
+    this.id = id;
+    this.name = name;
+    this.address = address;
+    this.creditLimit = creditLimit;
+    this.status = status;
+    this.skills = [];
+};
+
+Customer.prototype.addTechnology = function(domain, technology, level) {
+    var skill = new Skill(domain, technology, level);
+    
+    this.skills.push(skill);
+};
+
+Customer.prototype.format = function() {
+    var message = "";
+    
+    for each(var property in this) {
+        message += property + ", ";
+    }
+    
+    return message;
+};
+
+var customer = new Customer ( 
+    1, "Rajesh", "Bangalore", 12000, true );
+    
+customer.addTechnology("Language", "C#", "Expert");
+customer.addTechnology("Language", "C++", "Intermediate");
+customer.addTechnology("Language", "Javascript", "Beginner");
+
+var registeredCustomers = 
+    [
+        customer,
+        new Customer ( 2, "Ramesh", "Bangalore", 12000, false ),
+        new Customer ( 3, "Rakesh", "Bangalore", 32000, true ),
+        new Customer ( 4, "Rajnish", "Bangalore", 12000, true ),
+        new Customer ( 5, "Mahesh", "Bangalore", 22000, true ) 
+    ];
+
+var customersJsonString = JSON.stringify(registeredCustomers);
+
+console.log(customersJsonString);
+
+var parsedCustomers = JSON.parse(customersJsonString);
+
+console.log("Total # " + parsedCustomers.length + " Record(s) found!");
+
+var firstCustomerDetails = parsedCustomers[0];
+
+console.log(
+    Customer.prototype.format.call(firstCustomerDetails));
+
+// AJAX Calls using XHR
+
+<script type="text/javascript">
+        var contentsUrl = "DynamicContent.html";
+
+        function loadContents() {
+            var request = new XMLHttpRequest();
+
+            request.open('GET', contentsUrl, true);
+            request.send();
+
+            request.onreadystatechange = function () {
+                if (request.readyState == 4) {
+                    if (request.status == 200) {
+                        var responseContents = request.responseText;
+                        var mainContentElement = document.getElementById("main-content");
+
+                        mainContentElement.innerHTML = responseContents;
+                    }
+                }
+            };
+        }
+    </script>
+

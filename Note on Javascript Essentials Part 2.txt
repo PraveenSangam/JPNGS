@@ -1,0 +1,127 @@
+// Simple Functions
+
+function add(x, y) {
+	var result = x + y;
+
+	return result;
+}
+
+var output = add(10,10);
+var output2 = add(10,10,10);
+
+console.log(output);
+console.log(output2);
+
+function addEx() {
+	var parameters = arguments;
+	var result = 0;
+
+	for(var index=0;index<parameters.length;index++)
+		result += parameters[index];
+
+	return result;
+}
+
+console.log("Result : " + addEx(10,20));
+console.log("Result (2) : " + addEx(10,20,30,40,50));
+
+function A() { 
+	console.log("Caller of A is : " + A.caller.name); 
+	console.log("Complete Source of Caller is : " +
+		A.caller.toString());
+}
+
+function B() {
+	console.log("B Processing Started ...");
+	A();
+}
+
+B();
+
+console.log("Output : " +
+	eval("function abc() { return 10; } abc();"));
+
+
+console.log("End of App!");
+
+
+
+// functions that accept functions
+
+function processOrder(orderId, orderDate, orderValue, creditLimitValidationCallback) {
+	console.log("Order Processing Started ...");
+	console.log("Details : " + orderId + ", " +
+		orderDate.toString() + ", " + orderValue);
+
+	if(orderValue >= 100 && creditLimitValidationCallback &&
+		typeof creditLimitValidationCallback == 'function') {
+		var status = creditLimitValidationCallback(orderValue);
+
+		console.log("Credit Limit Validation Status : " + status);
+	}
+
+	console.log("Order Processing Completed ...");
+}
+
+processOrder("ORD10001", new Date(), 2300,
+	function(creditLimit) {
+		return creditLimit >= 100 && creditLimit <= 10000;
+	});
+
+// Functions that accept and return functions
+
+function processOrder(orderId, orderDate, orderValue, creditCardNumber, creditCardValidation) {
+	console.log("Details for Order Processing ... " +
+		orderId + ", " + orderDate.toString() + ", " + orderValue);
+	
+	var validation = orderId && orderValue && creditCardValidation &&
+		(typeof creditCardValidation == 'function');
+
+	if(!validation)
+		throw new Error("Invalid Arguments Specified for Processing!");
+
+	var status = creditCardValidation(creditCardNumber);
+
+	return function() {
+		return status ? "SUCCESS" : "FAILED";
+	};
+}
+
+var processOrderResult = processOrder("ORD10001", new Date(), 12000, 
+	"VISA-1111-1212-1212", 
+	function(creditCardNumber) {
+		return creditCardNumber &&
+			creditCardNumber.length == 19;
+	});
+
+var status = processOrderResult();
+
+console.log("Status : " + status);
+
+// Closures
+
+var setupIterator = function() {
+	'use strict';
+	var parameters = arguments;
+	var currentIndex = 0;
+
+	function getCurrentValue() {
+		if(currentIndex < 0 || currentIndex >= parameters.length)
+			throw new Error("Invalid Index Value Specified!");
+
+		return parameters[currentIndex++];
+	};
+
+	return getCurrentValue;
+};
+
+var next = setupIterator(10,20,30,40,50);
+
+try {
+	while(true) {
+		console.log(next());
+	}
+} catch(error) {
+	console.log("Error : " + error.message);
+}
+

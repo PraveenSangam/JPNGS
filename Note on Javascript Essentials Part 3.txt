@@ -1,0 +1,302 @@
+// Javascript Objects
+
+var customer = {
+    id: 1,
+    name: 'Northwind Traders',
+    address: 'Bangalore',
+    creditLimit: 2300,
+    activeStatus: true
+};
+
+customer.remarks = 'Simple Customer Record';
+customer.format = function() {
+    var formattedMessage = this.id + ', ' +
+        this.name + ', ' + this.address + ', ' +
+        this.creditLimit + ', ' + this.activeStatus + ', ' +
+        this.remarks;
+        
+    return formattedMessage;
+};
+
+console.log(customer.id);
+console.log(customer["id"]);
+
+console.log('Iterating properties of an object ...');
+
+for (var property in customer) {
+    if(typeof customer[property] != 'function')
+        console.log(customer[property]);
+}
+
+for each(var property in customer)
+    console.log(property);
+
+// objects with complex types
+
+
+var customer = {
+    id: 1,
+    name: {
+        firstName: 'Bill',
+        middleName: 'William',
+        lastName: 'Gates'
+    },
+    address: {
+        addressLine1: '11 Main Street',
+        addressLine2: 'MG Road',
+        city: 'Bangalore',
+        state: 'KA',
+        country: 'INDIA'
+    },
+    creditLimit: 23000,
+    activeStatus: true,
+    technologies: ['C#', 'Javascript', 'SQL Server','SharePoint Server']
+};
+
+function format(customerObject) {
+    var formattedMessage = '';
+    
+    formattedMessage = customerObject.id + ', ' +
+        customerObject.name.firstName + ', ' +
+        customerObject.name.middleName + ', '  +
+        customerObject.name.lastName + ', ' +
+        customerObject.address.addressLine1 + ', ' +
+        customerObject.address.addressLine2 + ', ' + 
+        customerObject.address.city + ', ' + 
+        customerObject.address.state + ', ' +
+        customerObject.address.country + ', ' +
+        customerObject.creditLimit + ', ' + customerObject.activeStatus + ', ' +
+        customerObject.technologies;
+    
+    return formattedMessage;
+}
+
+console.log(format(customer));
+
+// Constructor Functions and prototype
+
+
+function Customer(id, name, address, creditLimit, status) {
+    console.log('Constructor Logic Initialization Done!');
+    
+    this.id = id;
+    this.name = name;
+    this.address = address;
+    this.creditLimit = creditLimit;
+    this.status = status;
+};
+
+Array.prototype.verifyExists = function(item) {
+    var isFound = false;
+    
+    for each(var value in this) {
+        if(value == item) {
+            isFound=true;
+            break;
+        }
+    };
+    
+    return isFound;
+};
+
+Customer.prototype.format = function() {
+    var message = this.id + ', ' +
+        this.name + ', ' + this.address + ', ' +
+        this.creditLimit + ', ' + this.status;
+        
+    return message;
+};
+
+var customer = new Customer(1, 'Northwind', 'Bangalore', 1200, true);
+
+var values = ['Raghu', 'Pawan', 'Deepan', 'Ramakrishna', 'Praveen'];
+
+console.log(values.verifyExists('Raghu'));
+
+console.log(customer.format());
+console.log(customer instanceof Customer);
+console.log(typeof customer);
+console.log(typeof Customer.prototype);
+
+// Inheritance
+
+
+function Customer(id, name, address) {
+    this.id = id;
+    this.name = name;
+    this.address = address;
+}
+
+Customer.prototype.format = function() {
+    var message = this.id + ", " +
+        this.name + ", " + this.address;
+    
+    return message;
+};
+
+function InternetCustomer(id, name, address, blogUrl) {
+    this.id = id;
+    this.name = name;
+    this.address = address;
+    this.blogUrl = blogUrl;
+}
+
+InternetCustomer.prototype = new Customer();
+InternetCustomer.prototype.constructor = InternetCustomer;
+
+var internetCustomer = new InternetCustomer(
+    1, 'Rajesh', 'Bangalore', 'http://blogs.msdn.com/rajesh');
+
+console.log(internetCustomer instanceof Customer);
+console.log(internetCustomer instanceof InternetCustomer);
+
+console.log(typeof InternetCustomer.prototype.constructor);
+console.log(InternetCustomer.prototype.constructor);
+
+console.log(internetCustomer.format());
+
+
+// call and apply
+
+
+var obj = {
+    id: 10,
+    name: 'Rajkumar',
+    display: function(key, value) {
+        console.log(key + ', ' + value);
+        console.log ( this.id + ', ' + this.name);
+    }
+};
+
+obj.display('X', 'SONY INDIA');
+
+var alien = {
+    id: 100,
+    name: 'Terminator T3'
+};
+
+obj.display.call(alien, 'X', 'SONY UK');
+
+obj.display.apply(alien, ['X', 'SONY SINGAPORE']);
+
+// Overriding and Polymorphism in Javascript
+
+
+function Customer(id, name, address) {
+    this.id = id;
+    this.name = name;
+    this.address = address;
+}
+
+Customer.prototype.format = function() {
+    var message = this.id + ", " +
+        this.name + ", " + this.address;
+    
+    return message;
+};
+
+function InternetCustomer(id, name, address, blogUrl) {
+    Customer.call(this, id, name, address);
+    
+    this.blogUrl = blogUrl;
+}
+
+InternetCustomer.prototype = new Customer();
+InternetCustomer.prototype.constructor = InternetCustomer;
+
+InternetCustomer.prototype.format=function() {
+    var message = 
+        Customer.prototype.format.call(this) + ", " +
+        this.blogUrl;
+    
+    return message;
+};
+
+var internetCustomer = new InternetCustomer(
+    1, 'Rajesh', 'Bangalore', 'http://blogs.msdn.com/rajesh');
+
+console.log(internetCustomer instanceof Customer);
+console.log(internetCustomer instanceof InternetCustomer);
+
+console.log(typeof InternetCustomer.prototype.constructor);
+console.log(InternetCustomer.prototype.constructor);
+
+console.log(internetCustomer.format());
+
+// Exercise Source Code
+
+Requirement:
+1. create a class named 'Enumerator' which accepts values as a parameter in the constructor, and initializes to a property named "Values"
+
+2. have a prototype method named getOddValues() which would be implemented such that it returns only odd indexed values.
+
+3. create a derived class named "ExtendedEnumerator" which accepts values as a parameter in the constructor, and passes the same to base class constructor.
+
+4. have a prototype method named getEvenValues() which would be implemented such that it returns only even indexed values.
+
+create an object of ExtendedIterator add invoke getOddValues() and getEvenValues()
+	to print the output.
+
+function Enumerator(values) {
+    this.values = values;
+}
+
+Enumerator.prototype.getOddValues = function() {
+    var index = 0;
+    var oddValues = [];
+    
+    for(var counter=0;counter<this.values.length;counter+=2) {
+        oddValues.push(this.values[counter]);
+    }
+    
+    return {
+        current: function() {
+            return oddValues[index];
+        },
+        moveNext: function() {
+            if(index >= 0 && index < oddValues.length) {
+                index++;
+                return true;
+            }
+            
+            return false;
+        }
+    };
+};
+
+function ExtendedEnumerator(values) {  
+    Enumerator.call(this, values);
+};
+
+ExtendedEnumerator.prototype = new Enumerator();
+ExtendedEnumerator.prototype.constructor = ExtendedEnumerator;
+
+ExtendedEnumerator.prototype.getEvenValues=function() {
+    var index = 0;
+    var oddValues = [];
+    
+    for(var counter=1;counter<this.values.length;counter+=2) {
+        oddValues.push(this.values[counter]);
+    }
+    
+    return function() {
+        if(index >= 0 && index < oddValues.length)
+            return oddValues[index++];
+        
+        throw new Error("Invalid Index Value Specified!");
+    };
+};
+
+var iterator = new ExtendedEnumerator(
+    [10,20,30,40,50,60,70,80,90,100]);
+    
+var oddValues = iterator.getOddValues();
+
+try {
+    while(oddValues.moveNext()) {
+        console.log(oddValues.current());
+    }
+} catch(error) {
+    console.log('Error : ' + error.message);
+}
+
